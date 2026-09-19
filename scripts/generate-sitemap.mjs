@@ -1,50 +1,111 @@
 // Generate sitemap.xml and robots.txt from Supabase public data
-// Uses VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY (anon only, no service role)
+// Uses VITE_SUPABASE_URL and VITE_SUPABASE_ANON_KEY
 // Run: node scripts/generate-sitemap.mjs
+
 import { writeFile, mkdir } from 'node:fs/promises'
 import { existsSync } from 'node:fs'
 
-const SITE_URL = (process.env.VITE_SITE_URL || process.env.SITE_URL || '').replace(/\/$/, '') || 'https://example.com'
-const SUPABASE_URL = process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || ''
-const SUPABASE_ANON_KEY = process.env.VITE_SUPABASE_ANON_KEY || process.env.SUPABASE_ANON_KEY || ''
+const SITE_URL =
+  (process.env.VITE_SITE_URL || process.env.SITE_URL || '').replace(/\/$/, '') ||
+  'https://example.com'
+
+const SUPABASE_URL =
+  process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || ''
+
+const SUPABASE_ANON_KEY =
+  process.env.VITE_SUPABASE_ANON_KEY ||
+  process.env.SUPABASE_ANON_KEY ||
+  ''
+
+function isValidHeaderValue(value) {
+  return !/[^\x00-\xFF]/.test(value)
+}
 
 async function fetchSupabase(path, params = '') {
-  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) return null
+  if (!SUPABASE_URL || !SUPABASE_ANON_KEY) {
+    return null
+  }
+
+  // Prevent Node fetch from crashing with a ByteString error.
+  if (!isValidHeaderValue(SUPABASE_ANON_KEY)) {
+    console.warn(
+      'Invalid Supabase anon key: the environment variable contains non-ASCII characters.'
+    )
+    console.warn(
+      'Sitemap will be generated without fetching Supabase data.'
+    )
+    return null
+  }
+
   const url = `${SUPABASE_URL}/rest/v1/${path}?${params}`
+
   const res = await fetch(url, {
     headers: {
       apikey: SUPABASE_ANON_KEY,
       Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
     },
   })
+
   if (!res.ok) {
     console.warn(`Supabase fetch failed ${path}: ${res.status}`)
     return null
   }
+
   return res.json()
 }
 
 function xmlEscape(s) {
-  return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;')
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
 }
 
 async function main() {
   const staticRoutes = [
-    { loc: `${SITE_URL}/`, changefreq: 'daily', priority: '1.0' },
-    { loc: `${SITE_URL}/shop`, changefreq: 'daily', priority: '0.9' },
-    { loc: `${SITE_URL}/contact`, changefreq: 'monthly', priority: '0.5' },
+    {
+      loc: `${SITE_URL}/`,
+      changefreq: 'daily',
+      priority: '1.0',
+    },
+    {
+      loc: `${SITE_URL}/shop`,
+      changefreq: 'daily',
+      priority: '0.9',
+    },
+    {
+      loc: `${SITE_URL}/contact`,
+      changefreq: 'monthly',
+      priority: '0.5',
+    },
   ]
 
   let products = []
   let categories = []
 
   if (SUPABASE_URL && SUPABASE_ANON_KEY) {
-    // Products: only published
-    const prodData = await fetchSupabase('products', 'select=slug,updated_at&is_published=eq.true&order=updated_at.desc&limit=1000')
-    if (prodData) products = prodData
-    const catData = await fetchSupabase('categories', 'select=slug,created_at&is_active=eq.true&order=created_at.desc&limit=1000')
-    if (catData) categories = catData
-    console.log(`Fetched ${products.length} products, ${categories.length} categories`)
+    const prodData = await fetchSupabase(
+      'products',
+      'select=slug,updated_at&is_published=eq.true&order=updated_at.desc&limit=1000'
+    )
+
+    if (prodData) {
+      products = prodData
+    }
+
+    const catData = await fetchSupabase(
+      'categories',
+      'select=slug,created_at&is_active=eq.true&order=created_at.desc&limit=1000'
+    )
+
+    if (catData) {
+      categories = catData
+    }
+
+    console.log(
+      `Fetched ${products.length} products, ${categories.length} categories`
+    )
   } else {
     console.log('No Supabase env, generating static sitemap only')
   }
@@ -53,9 +114,12 @@ async function main() {
 
   for (const p of products) {
     if (!p.slug) continue
+
     urls.push({
       loc: `${SITE_URL}/product/${encodeURIComponent(p.slug)}`,
-      lastmod: p.updated_at ? new Date(p.updated_at).toISOString().split('T')[0] : undefined,
+      lastmod: p.updated_at
+        ? new Date(p.updated_at).toISOString().split('T')[0]
+        : undefined,
       changefreq: 'weekly',
       priority: '0.8',
     })
@@ -63,35 +127,70 @@ async function main() {
 
   for (const c of categories) {
     if (!c.slug) continue
+
     urls.push({
       loc: `${SITE_URL}/shop?category=${encodeURIComponent(c.slug)}`,
-      lastmod: c.created_at ? new Date(c.created_at).toISOString().split('T')[0] : undefined,
+      lastmod: c.created_at
+        ? new Date(c.created_at).toISOString().split('T')[0]
+        : undefined,
       changefreq: 'weekly',
       priority: '0.6',
     })
   }
 
-  // Deduplicate
   const seen = new Set()
+
   const uniqueUrls = urls.filter((u) => {
     if (seen.has(u.loc)) return false
+
     seen.add(u.loc)
     return true
   })
 
-  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>\n<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">\n${uniqueUrls
-    .map(
-      (u) => `  <url>\n    <loc>${xmlEscape(u.loc)}</loc>\n${u.lastmod ? `    <lastmod>${u.lastmod}</lastmod>\n` : ''}    <changefreq>${u.changefreq}</changefreq>\n    <priority>${u.priority}</priority>\n  </url>`
-    )
-    .join('\n')}\n</urlset>\n`
+  const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
+<urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
+${uniqueUrls
+  .map(
+    (u) => `  <url>
+    <loc>${xmlEscape(u.loc)}</loc>
+${u.lastmod ? `    <lastmod>${u.lastmod}</lastmod>\n` : ''}    <changefreq>${u.changefreq}</changefreq>
+    <priority>${u.priority}</priority>
+  </url>`
+  )
+  .join('\n')}
+</urlset>
+`
 
-  const robots = `User-agent: *\nAllow: /\nDisallow: /admin/\nDisallow: /account\nDisallow: /orders\nDisallow: /cart\nDisallow: /checkout\nDisallow: /wishlist\nDisallow: /notifications\nDisallow: /login\nDisallow: /register\nDisallow: /forgot-password\n\nSitemap: ${SITE_URL}/sitemap.xml\n`
+  const robots = `User-agent: *
+Allow: /
+Disallow: /admin/
+Disallow: /account
+Disallow: /orders
+Disallow: /cart
+Disallow: /checkout
+Disallow: /wishlist
+Disallow: /notifications
+Disallow: /login
+Disallow: /register
+Disallow: /forgot-password
 
-  if (!existsSync('public')) await mkdir('public', { recursive: true })
+Sitemap: ${SITE_URL}/sitemap.xml
+`
+
+  if (!existsSync('public')) {
+    await mkdir('public', { recursive: true })
+  }
+
   await writeFile('public/sitemap.xml', sitemap, 'utf-8')
   await writeFile('public/robots.txt', robots, 'utf-8')
-  console.log(`Generated public/sitemap.xml with ${uniqueUrls.length} URLs`)
-  console.log(`Generated public/robots.txt with Sitemap: ${SITE_URL}/sitemap.xml`)
+
+  console.log(
+    `Generated public/sitemap.xml with ${uniqueUrls.length} URLs`
+  )
+
+  console.log(
+    `Generated public/robots.txt with Sitemap: ${SITE_URL}/sitemap.xml`
+  )
 }
 
 main().catch((e) => {

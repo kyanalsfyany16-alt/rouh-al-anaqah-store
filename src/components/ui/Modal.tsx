@@ -44,7 +44,7 @@ export function Modal({ open, onClose, title, children, size = 'md', footer, clo
     <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/50 animate-fade-in overflow-y-auto overscroll-contain" onClick={closeOnOverlayClick ? onClose : undefined} ref={overlayRef}>
       <div
         ref={contentRef}
-        className={cn('w-full max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-xl animate-scale-in flex flex-col max-h-[95vh] sm:max-h-[90vh] my-4 sm:my-8 overflow-hidden', sizes[size])}
+        className={cn('w-full max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-xl animate-scale-in flex flex-col max-h-[90vh] sm:max-h-[90vh] my-4 sm:my-8 overflow-hidden', sizes[size])}
         onClick={e => e.stopPropagation()}
         role="dialog"
         aria-modal="true"

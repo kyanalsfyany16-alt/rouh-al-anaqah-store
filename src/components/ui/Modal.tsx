@@ -51,7 +51,7 @@ export function Modal({ open, onClose, title, children, size = 'md', footer, clo
         aria-labelledby={title ? 'modal-title' : undefined}
       >
         {(title || footer) && (
-          <div className="flex items-center justify-between gap-2 px-4 sm:px-6 py-4 border-b border-primary-200 shrink-0">
+          <div className="flex items-center justify-between gap-2 px-4 sm:px-6 py-4 border-b border-primary-200 shrink-0 sticky top-0 bg-white z-10 rounded-t-2xl">
             {title && <h2 id="modal-title" className="text-base sm:text-lg font-semibold text-primary-900 truncate min-w-0">{title}</h2>}
             <button onClick={onClose} className="p-1 rounded-lg text-primary-400 hover:text-primary-600 hover:bg-primary-100 transition-colors shrink-0" aria-label="إغلاق">
               <X className="h-5 w-5" />
@@ -60,7 +60,7 @@ export function Modal({ open, onClose, title, children, size = 'md', footer, clo
         )}
         <div className="p-4 sm:p-6 overflow-y-auto flex-1 min-h-0 overscroll-contain">{children}</div>
         {footer && (
-          <div className="flex items-center justify-end gap-2 sm:gap-3 px-4 sm:px-6 py-4 border-t border-primary-200 bg-primary-50 rounded-b-2xl flex-wrap shrink-0">
+          <div className="flex items-center justify-end gap-2 sm:gap-3 px-3 sm:px-6 py-3 sm:py-4 border-t border-primary-200 bg-white sm:bg-primary-50 rounded-b-2xl flex-wrap shrink-0 sticky bottom-0 z-10 w-full max-w-full">
             {footer}
           </div>
         )}

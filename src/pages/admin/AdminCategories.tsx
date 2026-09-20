@@ -250,7 +250,16 @@ export function AdminCategories() {
       </div>
 
       {/* Category modal */}
-      <Modal open={showModal} onClose={closeModal} title={editingCategory ? 'تعديل الفئة' : 'إضافة فئة جديدة'} size="lg">
+      <Modal open={showModal} onClose={closeModal} title={editingCategory ? 'تعديل الفئة' : 'إضافة فئة جديدة'} size="lg" footer={
+        <>
+          <Button type="button" onClick={closeModal} variant="outline">
+            إلغاء
+          </Button>
+          <Button type="button" onClick={handleSubmit} loading={saving} variant="gold">
+            <Save className="h-4 w-4" /> حفظ
+          </Button>
+        </>
+      }>
         <form
           onSubmit={(e) => {
             e.preventDefault()
@@ -299,14 +308,6 @@ export function AdminCategories() {
             <input type="checkbox" checked={formData.is_active} onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })} className="h-4 w-4 rounded border-primary-300 text-gold" />
             <span className="text-sm">نشط</span>
           </label>
-          <div className="flex justify-end gap-2 pt-4 border-t border-primary-200">
-            <Button type="button" onClick={closeModal} variant="outline">
-              إلغاء
-            </Button>
-            <Button type="submit" loading={saving} variant="gold">
-              <Save className="h-4 w-4" /> حفظ
-            </Button>
-          </div>
         </form>
       </Modal>
 
@@ -354,26 +355,35 @@ export function AdminCategories() {
         </div>
       </Modal>
 
-      <Modal open={showAttrModal} onClose={() => { setShowAttrModal(false); setEditingAttr(null) }} title={editingAttr ? 'تعديل سمة' : 'إضافة سمة'} size="lg">
+      <Modal open={showAttrModal} onClose={() => { setShowAttrModal(false); setEditingAttr(null) }} title={editingAttr ? 'تعديل سمة' : 'إضافة سمة'} size="lg" footer={
+        <>
+          <Button type="button" onClick={() => { setShowAttrModal(false); setEditingAttr(null) }} variant="outline">
+            إلغاء
+          </Button>
+          <Button type="button" onClick={handleAttrSubmit} variant="gold">
+            حفظ
+          </Button>
+        </>
+      }>
         <form
           onSubmit={(e) => {
             e.preventDefault()
             handleAttrSubmit()
           }}
-          className="space-y-4"
+          className="space-y-4 w-full max-w-full min-w-0"
         >
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
-            <div>
+            <div className="min-w-0">
               <Label>الاسم *</Label>
               <Input value={attrForm.name} onChange={(e) => setAttrForm({ ...attrForm, name: e.target.value })} placeholder="اللون" required />
             </div>
-            <div>
+            <div className="min-w-0">
               <Label>الرابط *</Label>
               <Input value={attrForm.slug} onChange={(e) => setAttrForm({ ...attrForm, slug: e.target.value })} placeholder="color" required />
             </div>
           </div>
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
-            <div>
+            <div className="min-w-0">
               <Label>النوع</Label>
               <Select value={attrForm.type} onChange={(e) => setAttrForm({ ...attrForm, type: e.target.value })}>
                 <option value="text">نص</option>
@@ -385,13 +395,13 @@ export function AdminCategories() {
                 <option value="image">صورة</option>
               </Select>
             </div>
-            <div>
+            <div className="min-w-0">
               <Label>الترتيب</Label>
               <Input type="number" value={attrForm.sort_order} onChange={(e) => setAttrForm({ ...attrForm, sort_order: Number(e.target.value) })} />
             </div>
           </div>
           {(attrForm.type === 'select' || attrForm.type === 'multiselect') && (
-            <div>
+            <div className="min-w-0">
               <Label>الخيارات (افصل بفاصلة)</Label>
               <Input value={attrForm.options} onChange={(e) => setAttrForm({ ...attrForm, options: e.target.value })} placeholder="أسود, أبيض, بيج" />
             </div>
@@ -400,14 +410,6 @@ export function AdminCategories() {
             <input type="checkbox" checked={attrForm.is_required} onChange={(e) => setAttrForm({ ...attrForm, is_required: e.target.checked })} className="h-4 w-4 rounded" />
             <span className="text-sm">مطلوب</span>
           </label>
-          <div className="flex justify-end gap-2 pt-4 border-t">
-            <Button type="button" onClick={() => { setShowAttrModal(false); setEditingAttr(null) }} variant="outline">
-              إلغاء
-            </Button>
-            <Button type="submit" variant="gold">
-              حفظ
-            </Button>
-          </div>
         </form>
       </Modal>
 

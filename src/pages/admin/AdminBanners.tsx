@@ -101,7 +101,12 @@ export function AdminBanners() {
         )}
       </div>
 
-      <Modal open={showModal} onClose={closeModal} title={editingBanner ? 'تعديل البانر' : 'إضافة بانر جديد'} size="lg">
+      <Modal open={showModal} onClose={closeModal} title={editingBanner ? 'تعديل البانر' : 'إضافة بانر جديد'} size="lg" footer={
+        <>
+          <Button type="button" onClick={closeModal} variant="outline">إلغاء</Button>
+          <Button type="button" onClick={handleSubmit} loading={saving} variant="gold"><Save className="h-4 w-4" /> حفظ</Button>
+        </>
+      }>
         <form onSubmit={e => { e.preventDefault(); handleSubmit() }} className="space-y-4">
           <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>العنوان</Label><Input value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} /></div>
@@ -116,10 +121,6 @@ export function AdminBanners() {
           <div className="flex items-center gap-2">
             <input type="checkbox" id="is_active" checked={formData.is_active} onChange={e => setFormData({ ...formData, is_active: e.target.checked })} className="h-4 w-4 rounded border-primary-300 text-gold focus:ring-gold" />
             <Label htmlFor="is_active" className="mb-0 cursor-pointer">نشط</Label>
-          </div>
-          <div className="flex justify-end gap-2 pt-4 border-t border-primary-200">
-            <Button type="button" onClick={closeModal} variant="outline">إلغاء</Button>
-            <Button type="submit" loading={saving} variant="gold"><Save className="h-4 w-4" /> حفظ</Button>
           </div>
         </form>
       </Modal>

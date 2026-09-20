@@ -42,7 +42,7 @@ export function AdminSettings() {
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-primary-200 p-6 space-y-8">
         <section>
           <h3 className="font-semibold text-primary-900 mb-4 flex items-center gap-2"><Image className="h-5 w-5" /> المعلومات الأساسية</h3>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>اسم المتجر *</Label><Input value={formData.store_name} onChange={e => setFormData({ ...formData, store_name: e.target.value })} required /></div>
             <div><Label>البريد الإلكتروني</Label><Input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} /></div>
             <div><Label>الهاتف</Label><Input type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} /></div>

@@ -72,7 +72,7 @@ export function AdminOrders() {
   if (loading) return <LoadingSkeleton variant="list" count={6} />
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader title="إدارة الطلبات" description={`${orders.length} طلب`} />
 
       <div className="bg-white rounded-2xl border border-primary-200 p-4 mb-4 flex flex-col sm:flex-row gap-3">
@@ -89,10 +89,10 @@ export function AdminOrders() {
         </select>
       </div>
 
-      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden w-full max-w-full">
         {filtered.length ? (
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto w-full max-w-full">
+            <table className="w-full min-w-[600px]">
               <thead className="bg-primary-50">
                 <tr className="text-right">
                   <th className="px-4 py-3 text-xs font-medium text-primary-500">الطلب</th>

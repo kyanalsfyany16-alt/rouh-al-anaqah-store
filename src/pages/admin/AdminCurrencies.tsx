@@ -65,12 +65,12 @@ export function AdminCurrencies() {
   if (loading) return <LoadingSkeleton variant="list" count={5} />
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader title="إدارة العملات" actions={<Button onClick={() => openModal()} variant="gold"><Plus className="h-4 w-4" /> إضافة عملة</Button>} />
       <div className="bg-white rounded-2xl border border-primary-200">
         {currencies.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto w-full max-w-full">
+            <table className="w-full min-w-[600px]">
               <thead className="bg-primary-50">
                 <tr className="text-right">
                   <th className="p-4 font-medium text-primary-500">الكود</th>
@@ -109,15 +109,15 @@ export function AdminCurrencies() {
 
       <Modal open={showModal} onClose={closeModal} title={editingCurrency ? 'تعديل العملة' : 'إضافة عملة جديدة'} size="lg">
         <form onSubmit={e => { e.preventDefault(); handleSubmit() }} className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>الكود (مثل: SAR, USD)</Label><Input value={formData.code} onChange={e => setFormData({ ...formData, code: e.target.value.toUpperCase() })} required /></div>
             <div><Label>الاسم</Label><Input value={formData.name} onChange={e => setFormData({ ...formData, name: e.target.value })} required /></div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>الرمز (مثل: ر.س, $)</Label><Input value={formData.symbol} onChange={e => setFormData({ ...formData, symbol: e.target.value })} required /></div>
             <div><Label>سعر الصرف</Label><Input type="number" step="0.0001" min="0" value={formData.rate} onChange={e => setFormData({ ...formData, rate: Number(e.target.value) })} required /></div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div className="flex items-center gap-2 pt-6">
               <input type="checkbox" id="is_default" checked={formData.is_default} onChange={e => setFormData({ ...formData, is_default: e.target.checked })} className="h-4 w-4 rounded border-primary-300 text-gold focus:ring-gold" />
               <Label htmlFor="is_default" className="mb-0 cursor-pointer">العملة الافتراضية</Label>

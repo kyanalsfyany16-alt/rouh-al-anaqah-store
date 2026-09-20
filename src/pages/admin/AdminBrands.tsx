@@ -100,7 +100,7 @@ export function AdminBrands() {
   if (loading) return <LoadingSkeleton variant="list" count={5} />
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader
         title="إدارة العلامات التجارية"
         description={`${brands.length} علامة`}
@@ -111,14 +111,14 @@ export function AdminBrands() {
         }
       />
 
-      <div className="bg-white rounded-2xl border border-primary-200 p-4 mb-4">
+      <div className="bg-white rounded-2xl border border-primary-200 p-3 sm:p-4 mb-4 w-full max-w-full">
         <SearchInput value={search} onChange={setSearch} placeholder="بحث بالاسم أو الرابط..." />
       </div>
 
-      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden w-full max-w-full">
         {filtered.length ? (
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto w-full max-w-full">
+            <table className="w-full min-w-[600px]">
               <thead className="bg-primary-50">
                 <tr className="text-right">
                   <th className="px-4 py-3 text-xs font-medium text-primary-500">الشعار</th>
@@ -180,7 +180,7 @@ export function AdminBrands() {
           }}
           className="space-y-4"
         >
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div>
               <Label>الاسم *</Label>
               <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />

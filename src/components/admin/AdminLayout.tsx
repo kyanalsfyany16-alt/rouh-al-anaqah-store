@@ -137,11 +137,11 @@ export function AdminLayout() {
   return (
     <>
       <SEO noindex />
-      <div className="min-h-screen bg-primary-50 flex" dir="rtl">
+      <div className="min-h-screen bg-primary-50 flex w-full max-w-full overflow-x-hidden" dir="rtl">
       {/* Sidebar */}
       <aside
         className={cn(
-          'fixed inset-y-0 right-0 z-50 w-64 bg-primary-950 flex flex-col transform transition-transform duration-300',
+          'fixed inset-y-0 right-0 z-50 w-64 max-w-[85vw] bg-primary-950 flex flex-col transform transition-transform duration-300',
           'lg:translate-x-0',
           sidebarOpen ? 'translate-x-0' : 'translate-x-full'
         )}
@@ -214,10 +214,10 @@ export function AdminLayout() {
       )}
 
       {/* Main column */}
-      <div className="flex-1 flex flex-col min-w-0 lg:mr-64">
+      <div className="flex-1 flex flex-col min-w-0 max-w-full w-full lg:mr-64 overflow-x-hidden">
         {/* Topbar */}
-        <header className="sticky top-0 z-30 bg-white border-b border-primary-200">
-          <div className="flex items-center gap-3 h-16 px-4 sm:px-6">
+        <header className="sticky top-0 z-30 bg-white border-b border-primary-200 w-full max-w-full overflow-x-hidden">
+          <div className="flex items-center gap-2 sm:gap-3 h-16 px-3 sm:px-6 w-full max-w-full">
             <button
               onClick={() => setSidebarOpen(true)}
               className="lg:hidden p-2 rounded-xl text-primary-500 hover:bg-primary-100 hover:text-primary-900 transition-colors"
@@ -239,23 +239,23 @@ export function AdminLayout() {
                 عرض المتجر
               </Link>
 
-              <div className="relative" onClick={(e) => e.stopPropagation()}>
+              <div className="relative shrink-0" onClick={(e) => e.stopPropagation()}>
                 <button
                   onClick={() => setUserMenuOpen((v) => !v)}
-                  className="flex items-center gap-2 p-1.5 rounded-xl hover:bg-primary-100 transition-colors"
+                  className="flex items-center gap-1 sm:gap-2 p-1 sm:p-1.5 rounded-xl hover:bg-primary-100 transition-colors"
                   aria-expanded={userMenuOpen}
                   aria-haspopup="true"
                 >
-                  <div className="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center">
+                  <div className="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center shrink-0">
                     <span className="text-gold font-semibold text-sm">{profile?.first_name?.[0] || profile?.email?.[0] || 'م'}</span>
                   </div>
-                  <span className="hidden sm:block text-sm font-medium text-primary-700 max-w-[120px] truncate">
+                  <span className="hidden sm:block text-sm font-medium text-primary-700 max-w-[100px] truncate">
                     {profile?.first_name || 'المدير'}
                   </span>
-                  <ChevronDown className="h-4 w-4 text-primary-400 hidden sm:block" />
+                  <ChevronDown className="h-4 w-4 text-primary-400 hidden sm:block shrink-0" />
                 </button>
                 {userMenuOpen && (
-                  <div className="absolute left-0 top-full mt-2 w-56 bg-white rounded-xl shadow-card border border-primary-200 py-2 animate-scale-in">
+                  <div className="absolute left-0 top-full mt-2 w-56 max-w-[calc(100vw-2rem)] bg-white rounded-xl shadow-card border border-primary-200 py-2 animate-scale-in">
                     <div className="px-4 py-2 border-b border-primary-100">
                       <p className="text-sm font-medium text-primary-900 truncate">{profile?.email}</p>
                       <p className="text-xs text-primary-500">{roleLabel}</p>
@@ -289,8 +289,8 @@ export function AdminLayout() {
         </header>
 
         {/* Content */}
-        <main className="flex-1 bg-primary-50">
-          <div className="container-app py-6 sm:py-8">
+        <main className="flex-1 bg-primary-50 w-full max-w-full min-w-0 overflow-x-hidden">
+          <div className="container-app w-full max-w-full py-4 sm:py-6 lg:py-8">
             <Outlet />
           </div>
         </main>

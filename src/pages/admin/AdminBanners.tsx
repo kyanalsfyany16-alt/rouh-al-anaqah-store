@@ -61,12 +61,12 @@ export function AdminBanners() {
   if (loading) return <LoadingSkeleton variant="list" count={5} />
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader title="إدارة البنرات" actions={<Button onClick={() => openModal()} variant="gold"><Plus className="h-4 w-4" /> إضافة بانر</Button>} />
       <div className="bg-white rounded-2xl border border-primary-200">
         {banners.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto w-full max-w-full">
+            <table className="w-full min-w-[600px]">
               <thead className="bg-primary-50">
                 <tr className="text-right">
                   <th className="p-4 font-medium text-primary-500">الصورة</th>
@@ -103,13 +103,13 @@ export function AdminBanners() {
 
       <Modal open={showModal} onClose={closeModal} title={editingBanner ? 'تعديل البانر' : 'إضافة بانر جديد'} size="lg">
         <form onSubmit={e => { e.preventDefault(); handleSubmit() }} className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>العنوان</Label><Input value={formData.title} onChange={e => setFormData({ ...formData, title: e.target.value })} /></div>
             <div><Label>الوصف الفرعي</Label><Input value={formData.subtitle} onChange={e => setFormData({ ...formData, subtitle: e.target.value })} /></div>
           </div>
           <div><Label>الرابط (اختياري)</Label><Input value={formData.link_url} onChange={e => setFormData({ ...formData, link_url: e.target.value })} placeholder="https://example.com" /></div>
           <div><Label>الصورة *</Label><ImageUploader bucket="banner-images" value={formData.image_url} onChange={url => setFormData({ ...formData, image_url: url || '' })} /></div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>الموضع</Label><Select value={formData.position} onChange={e => setFormData({ ...formData, position: e.target.value })}><option value="home">الرئيسية</option><option value="shop">المتجر</option><option value="category">الفئة</option><option value="product">المنتج</option></Select></div>
             <div><Label>الترتيب</Label><Input type="number" value={formData.sort_order} onChange={e => setFormData({ ...formData, sort_order: Number(e.target.value) })} /></div>
           </div>

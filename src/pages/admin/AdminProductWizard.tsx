@@ -390,7 +390,7 @@ export function AdminProductWizard() {
         {/* Step 0: Basic */}
         {currentStep === 0 && (
           <div className="space-y-5">
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
               <div>
                 <Label>اسم المنتج *</Label>
                 <Input value={form.name} onChange={(e) => updateForm('name', e.target.value)} placeholder="مثال: قميص رجالي فاخر" />
@@ -435,7 +435,7 @@ export function AdminProductWizard() {
         )}
 
         {currentStep === 1 && (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div>
               <Label>الفئة *</Label>
               <Select value={form.category_id} onChange={(e) => updateForm('category_id', e.target.value)}>
@@ -475,7 +475,7 @@ export function AdminProductWizard() {
         )}
 
         {currentStep === 2 && (
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div>
               <Label>السعر *</Label>
               <Input type="number" step="0.01" min="0" value={form.price} onChange={(e) => updateForm('price', e.target.value)} />

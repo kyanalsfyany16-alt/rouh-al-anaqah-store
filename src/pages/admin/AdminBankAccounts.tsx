@@ -86,7 +86,7 @@ export function AdminBankAccounts() {
   if (loading) return <LoadingSkeleton variant="list" count={5} />
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader
         title="الحسابات البنكية"
         description={`${accounts.length} حساب`}
@@ -97,14 +97,14 @@ export function AdminBankAccounts() {
         }
       />
 
-      <div className="bg-white rounded-2xl border border-primary-200 p-4 mb-4">
+      <div className="bg-white rounded-2xl border border-primary-200 p-3 sm:p-4 mb-4 w-full max-w-full">
         <SearchInput value={search} onChange={setSearch} placeholder="بحث باسم البنك أو صاحب الحساب..." />
       </div>
 
-      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden w-full max-w-full">
         {filtered.length ? (
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto w-full max-w-full">
+            <table className="w-full min-w-[600px]">
               <thead className="bg-primary-50">
                 <tr className="text-right">
                   <th className="px-4 py-3 text-xs font-medium text-primary-500">البنك</th>
@@ -162,7 +162,7 @@ export function AdminBankAccounts() {
           }}
           className="space-y-4"
         >
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div>
               <Label>اسم البنك *</Label>
               <Input value={form.bank_name} onChange={(e) => setForm({ ...form, bank_name: e.target.value })} required />
@@ -172,7 +172,7 @@ export function AdminBankAccounts() {
               <Input value={form.account_holder} onChange={(e) => setForm({ ...form, account_holder: e.target.value })} required />
             </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div>
               <Label>رقم الحساب *</Label>
               <Input value={form.account_number} onChange={(e) => setForm({ ...form, account_number: e.target.value })} required />
@@ -182,7 +182,7 @@ export function AdminBankAccounts() {
               <Input value={form.iban} onChange={(e) => setForm({ ...form, iban: e.target.value })} placeholder="اختياري" />
             </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div>
               <Label>العملة</Label>
               <Select value={form.currency_code} onChange={(e) => setForm({ ...form, currency_code: e.target.value })}>

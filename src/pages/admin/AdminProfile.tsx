@@ -75,7 +75,7 @@ export function AdminProfile() {
       <form onSubmit={handleSubmit} className="bg-white rounded-2xl border border-primary-200 p-6 space-y-8">
         <section>
           <h3 className="font-semibold text-primary-900 mb-4 flex items-center gap-2"><User className="h-5 w-5" /> المعلومات الشخصية</h3>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>الاسم الأول</Label><Input value={formData.first_name} onChange={e => setFormData({ ...formData, first_name: e.target.value })} /></div>
             <div><Label>اسم العائلة</Label><Input value={formData.last_name} onChange={e => setFormData({ ...formData, last_name: e.target.value })} /></div>
             <div><Label>البريد الإلكتروني</Label><Input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} disabled /></div>
@@ -88,7 +88,7 @@ export function AdminProfile() {
           <h3 className="font-semibold text-primary-900 mb-4 flex items-center gap-2"><Lock className="h-5 w-5" /> تغيير كلمة المرور</h3>
           <div className="space-y-4">
             <div><Label>كلمة المرور الحالية</Label><div className="relative"><Input type={showPassword ? 'text' : 'password'} value={formData.current_password} onChange={e => setFormData({ ...formData, current_password: e.target.value })} className="pr-12" /><button type="button" onClick={() => setShowPassword(!showPassword)} className="absolute left-4 top-1/2 -translate-y-1/2 text-primary-400">{showPassword ? <EyeOff className="h-5 w-5" /> : <Eye className="h-5 w-5" />}</button></div></div>
-            <div className="grid gap-4 sm:grid-cols-2">
+            <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
               <div><Label>كلمة المرور الجديدة</Label><Input type="password" value={formData.new_password} onChange={e => setFormData({ ...formData, new_password: e.target.value })} minLength={6} /></div>
               <div><Label>تأكيد كلمة المرور الجديدة</Label><Input type="password" value={formData.confirm_password} onChange={e => setFormData({ ...formData, confirm_password: e.target.value })} /></div>
             </div>

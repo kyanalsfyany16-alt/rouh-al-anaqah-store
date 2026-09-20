@@ -57,12 +57,12 @@ export function AdminSocial() {
   if (loading) return <LoadingSkeleton variant="list" count={5} />
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader title="وسائل التواصل الاجتماعي" actions={<Button onClick={() => openModal()} variant="gold"><Plus className="h-4 w-4" /> إضافة رابط</Button>} />
       <div className="bg-white rounded-2xl border border-primary-200">
         {items.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto w-full max-w-full">
+            <table className="w-full min-w-[600px]">
               <thead className="bg-primary-50">
                 <tr className="text-right">
                   <th className="p-4 font-medium text-primary-500">المنصة</th>
@@ -99,12 +99,12 @@ export function AdminSocial() {
 
       <Modal open={showModal} onClose={closeModal} title={editingItem ? 'تعديل الرابط' : 'إضافة رابط تواصل'} size="lg">
         <form onSubmit={e => { e.preventDefault(); handleSubmit() }} className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>المنصة (مثل: Twitter, Instagram, Snapchat)</Label><Input value={formData.platform} onChange={e => setFormData({ ...formData, platform: e.target.value })} required /></div>
             <div><Label>الأيقونة (emoji أو اسم الأيقونة)</Label><Input value={formData.icon} onChange={e => setFormData({ ...formData, icon: e.target.value })} placeholder="🐦 أو twitter" /></div>
           </div>
           <div><Label>الرابط *</Label><Input value={formData.url} onChange={e => setFormData({ ...formData, url: e.target.value })} placeholder="https://twitter.com/yourstore" required /></div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>الترتيب</Label><Input type="number" value={formData.sort_order} onChange={e => setFormData({ ...formData, sort_order: Number(e.target.value) })} /></div>
             <div className="flex items-center gap-2 pt-6">
               <input type="checkbox" id="is_active" checked={formData.is_active} onChange={e => setFormData({ ...formData, is_active: e.target.checked })} className="h-4 w-4 rounded border-primary-300 text-gold focus:ring-gold" />

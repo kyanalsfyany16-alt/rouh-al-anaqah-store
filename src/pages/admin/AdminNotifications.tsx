@@ -83,7 +83,7 @@ export function AdminNotifications() {
   if (loading) return <LoadingSkeleton variant="list" count={5} />
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader
         title="الإشعارات"
         description={`${notifications.length} إشعار`}
@@ -99,11 +99,11 @@ export function AdminNotifications() {
         }
       />
 
-      <div className="bg-white rounded-2xl border border-primary-200 p-4 mb-4">
+      <div className="bg-white rounded-2xl border border-primary-200 p-3 sm:p-4 mb-4 w-full max-w-full">
         <SearchInput value={search} onChange={setSearch} placeholder="بحث في الإشعارات..." />
       </div>
 
-      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden w-full max-w-full">
         {filtered.length ? (
           <div className="divide-y divide-primary-100">
             {filtered.map((n) => (
@@ -155,7 +155,7 @@ export function AdminNotifications() {
             <Label>الرسالة</Label>
             <Textarea value={form.message} onChange={(e) => setForm({ ...form, message: e.target.value })} rows={4} placeholder="نص الإشعار..." />
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div>
               <Label>النوع</Label>
               <Select value={form.type} onChange={(e) => setForm({ ...form, type: e.target.value })}>

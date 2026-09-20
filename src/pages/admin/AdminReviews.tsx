@@ -36,12 +36,12 @@ export function AdminReviews() {
   if (loading) return <LoadingSkeleton variant="list" count={5} />
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader title="إدارة التقييمات" />
       <div className="bg-white rounded-2xl border border-primary-200">
         {reviews.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto w-full max-w-full">
+            <table className="w-full min-w-[600px]">
               <thead className="bg-primary-50">
                 <tr className="text-right">
                   <th className="p-4 font-medium text-primary-500">المنتج</th>

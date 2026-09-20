@@ -59,12 +59,12 @@ export function AdminAdmins() {
   if (loading) return <LoadingSkeleton variant="list" count={5} />
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader title="إدارة المديرين" actions={<Button onClick={() => openModal()} variant="gold"><Plus className="h-4 w-4" /> إضافة مدير</Button>} />
       <div className="bg-white rounded-2xl border border-primary-200">
         {admins.length > 0 ? (
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto w-full max-w-full">
+            <table className="w-full min-w-[600px]">
               <thead className="bg-primary-50">
                 <tr className="text-right">
                   <th className="p-4 font-medium text-primary-500">المدير</th>
@@ -108,15 +108,15 @@ export function AdminAdmins() {
 
       <Modal open={showModal} onClose={closeModal} title={editingAdmin ? 'تعديل المدير' : 'إضافة مدير جديد'} size="lg">
         <form onSubmit={e => { e.preventDefault(); handleSubmit() }} className="space-y-4">
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>الاسم الأول</Label><Input value={formData.first_name} onChange={e => setFormData({ ...formData, first_name: e.target.value })} /></div>
             <div><Label>اسم العائلة</Label><Input value={formData.last_name} onChange={e => setFormData({ ...formData, last_name: e.target.value })} /></div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>البريد الإلكتروني</Label><Input type="email" value={formData.email} onChange={e => setFormData({ ...formData, email: e.target.value })} required /></div>
             <div><Label>الهاتف</Label><Input type="tel" value={formData.phone} onChange={e => setFormData({ ...formData, phone: e.target.value })} /></div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div><Label>الدور</Label><Select value={formData.role} onChange={e => setFormData({ ...formData, role: e.target.value })}><option value="admin">مدير</option><option value="super_admin">مدير عام</option></Select></div>
             <div className="flex items-center gap-2 pt-6">
               <input type="checkbox" id="is_active" checked={formData.is_active} onChange={e => setFormData({ ...formData, is_active: e.target.checked })} className="h-4 w-4 rounded border-primary-300 text-gold focus:ring-gold" />

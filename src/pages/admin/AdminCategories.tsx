@@ -170,25 +170,25 @@ export function AdminCategories() {
   if (loading) return <LoadingSkeleton variant="list" count={5} />
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader
         title="إدارة الفئات"
         description={`${categories.length} فئة`}
         actions={
-          <Button onClick={() => openModal()} variant="gold">
+          <Button onClick={() => openModal()} variant="gold" className="w-full sm:w-auto">
             <Plus className="h-4 w-4" /> إضافة فئة
           </Button>
         }
       />
 
-      <div className="bg-white rounded-2xl border border-primary-200 p-4 mb-4">
+      <div className="bg-white rounded-2xl border border-primary-200 p-3 sm:p-4 mb-4 w-full max-w-full overflow-hidden">
         <SearchInput value={search} onChange={setSearch} placeholder="بحث بالاسم أو الرابط..." />
       </div>
 
-      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden w-full max-w-full">
         {filtered.length ? (
-          <div className="overflow-x-auto">
-            <table className="w-full">
+          <div className="overflow-x-auto w-full max-w-full">
+            <table className="w-full min-w-[600px]">
               <thead className="bg-primary-50">
                 <tr className="text-right">
                   <th className="px-4 py-3 text-xs font-medium text-primary-500">الصورة</th>
@@ -256,24 +256,24 @@ export function AdminCategories() {
             e.preventDefault()
             handleSubmit()
           }}
-          className="space-y-4"
+          className="space-y-4 w-full max-w-full min-w-0"
         >
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
+            <div className="min-w-0">
               <Label>الاسم *</Label>
               <Input value={formData.name} onChange={(e) => setFormData({ ...formData, name: e.target.value })} required />
             </div>
-            <div>
+            <div className="min-w-0">
               <Label>الرابط (Slug)</Label>
               <Input value={formData.slug} onChange={(e) => setFormData({ ...formData, slug: e.target.value })} placeholder="يُنشأ من الاسم" />
             </div>
           </div>
-          <div>
+          <div className="min-w-0">
             <Label>الوصف</Label>
-            <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="textarea" rows={3} />
+            <textarea value={formData.description} onChange={(e) => setFormData({ ...formData, description: e.target.value })} className="textarea w-full max-w-full" rows={3} />
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
-            <div>
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
+            <div className="min-w-0">
               <Label>الفئة الأب</Label>
               <Select value={formData.parent_id} onChange={(e) => setFormData({ ...formData, parent_id: e.target.value })}>
                 <option value="">لا يوجد (فئة رئيسية)</option>
@@ -286,12 +286,12 @@ export function AdminCategories() {
                   ))}
               </Select>
             </div>
-            <div>
+            <div className="min-w-0">
               <Label>الترتيب</Label>
               <Input type="number" value={formData.sort_order} onChange={(e) => setFormData({ ...formData, sort_order: Number(e.target.value) })} />
             </div>
           </div>
-          <div>
+          <div className="min-w-0 w-full max-w-full">
             <Label>صورة الفئة</Label>
             <ImageUploader bucket="category-images" value={formData.image_url} onChange={(url) => setFormData({ ...formData, image_url: url || '' })} />
           </div>
@@ -362,7 +362,7 @@ export function AdminCategories() {
           }}
           className="space-y-4"
         >
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div>
               <Label>الاسم *</Label>
               <Input value={attrForm.name} onChange={(e) => setAttrForm({ ...attrForm, name: e.target.value })} placeholder="اللون" required />
@@ -372,7 +372,7 @@ export function AdminCategories() {
               <Input value={attrForm.slug} onChange={(e) => setAttrForm({ ...attrForm, slug: e.target.value })} placeholder="color" required />
             </div>
           </div>
-          <div className="grid gap-4 sm:grid-cols-2">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 w-full max-w-full">
             <div>
               <Label>النوع</Label>
               <Select value={attrForm.type} onChange={(e) => setAttrForm({ ...attrForm, type: e.target.value })}>

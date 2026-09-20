@@ -181,7 +181,7 @@ export function ImageUploader(props: ImageUploaderProps) {
 
   if (multiple) {
     return (
-      <div className="w-full">
+      <div className="w-full max-w-full min-w-0">
         <input
           ref={fileInputRef}
           type="file"
@@ -194,12 +194,12 @@ export function ImageUploader(props: ImageUploaderProps) {
         <div
           onDrop={handleDrop}
           onDragOver={(e) => e.preventDefault()}
-          className={cn('rounded-2xl border-2 border-dashed p-4', uploading ? 'opacity-60' : 'border-primary-300 hover:border-gold hover:bg-gold/5')}
+          className={cn('w-full max-w-full rounded-2xl border-2 border-dashed p-3 sm:p-4 overflow-hidden', uploading ? 'opacity-60' : 'border-primary-300 hover:border-gold hover:bg-gold/5')}
         >
           {multiPreviews.length > 0 && (
-            <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 mb-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 gap-2 sm:gap-3 mb-4 w-full max-w-full">
               {multiPreviews.map((url, i) => (
-                <div key={i} className="relative aspect-square rounded-xl overflow-hidden border border-primary-200 group">
+                <div key={i} className="relative aspect-square rounded-xl overflow-hidden border border-primary-200 group w-full max-w-full min-w-0">
                   <img src={url} alt={`صورة ${i + 1}`} className="w-full h-full object-cover" />
                   <button
                     type="button"
@@ -228,11 +228,11 @@ export function ImageUploader(props: ImageUploaderProps) {
             type="button"
             onClick={trigger}
             disabled={uploading}
-            className="w-full flex flex-col items-center justify-center gap-2 py-6 text-primary-500 hover:text-gold transition-colors disabled:opacity-50"
+            className="w-full max-w-full flex flex-col items-center justify-center gap-1 sm:gap-2 py-4 sm:py-6 px-2 text-primary-500 hover:text-gold transition-colors disabled:opacity-50 min-w-0"
           >
-            {uploading ? <Loader2 className="h-6 w-6 animate-spin" /> : <Upload className="h-6 w-6" />}
-            <span className="text-sm font-medium">{uploading ? 'جاري الرفع...' : label}</span>
-            <span className="text-xs text-primary-400">اسحب وأفلت أو انقر للاختيار — JPEG/PNG/WebP حتى 5MB</span>
+            {uploading ? <Loader2 className="h-5 w-5 sm:h-6 sm:w-6 animate-spin" /> : <Upload className="h-5 w-5 sm:h-6 sm:w-6" />}
+            <span className="text-sm font-medium truncate max-w-full">{uploading ? 'جاري الرفع...' : label}</span>
+            <span className="text-xs text-primary-400 text-center px-2">اسحب وأفلت أو انقر للاختيار — JPEG/PNG/WebP حتى 5MB</span>
           </button>
           {error && (
             <div className="mt-3 px-3 py-2 bg-red-50 border border-red-200 rounded-xl text-red-700 text-sm flex items-center gap-2">
@@ -247,7 +247,7 @@ export function ImageUploader(props: ImageUploaderProps) {
 
   // Single mode
   return (
-    <div className="w-full">
+    <div className="w-full max-w-full min-w-0">
       <input
         ref={fileInputRef}
         type="file"
@@ -260,13 +260,13 @@ export function ImageUploader(props: ImageUploaderProps) {
         onDrop={handleDrop}
         onDragOver={(e) => e.preventDefault()}
         className={cn(
-          'relative border-2 border-dashed rounded-2xl transition-all',
+          'relative w-full max-w-full border-2 border-dashed rounded-2xl transition-all overflow-hidden min-w-0',
           hasSingle ? 'border-transparent bg-transparent' : 'border-primary-300 hover:border-gold hover:bg-gold/5',
           uploading && 'opacity-75'
         )}
       >
         {hasSingle ? (
-          <div className="relative aspect-square rounded-xl overflow-hidden">
+          <div className="relative w-full max-w-full aspect-square rounded-xl overflow-hidden min-w-0">
             <img src={preview!} alt="معاينة" className="w-full h-full object-cover rounded-xl" />
             {uploading && (
               <div className="absolute inset-0 bg-black/50 flex items-center justify-center rounded-xl text-white">
@@ -297,13 +297,13 @@ export function ImageUploader(props: ImageUploaderProps) {
             type="button"
             onClick={trigger}
             disabled={uploading}
-            className="w-full aspect-square flex flex-col items-center justify-center gap-3 p-8 text-center text-primary-500 hover:text-gold disabled:opacity-50"
+            className="w-full max-w-full aspect-square flex flex-col items-center justify-center gap-2 sm:gap-3 p-4 sm:p-8 text-center text-primary-500 hover:text-gold disabled:opacity-50 min-w-0 overflow-hidden"
           >
-            <div className="p-3 bg-primary-100 rounded-full">
-              <Upload className="h-8 w-8" />
+            <div className="p-2 sm:p-3 bg-primary-100 rounded-full shrink-0">
+              <Upload className="h-6 w-6 sm:h-8 sm:w-8" />
             </div>
-            <span className="font-medium">{label}</span>
-            <p className="text-sm text-primary-400">أو اسحب وأفلت الصورة هنا</p>
+            <span className="font-medium text-sm sm:text-base truncate max-w-full px-2">{label}</span>
+            <p className="text-xs sm:text-sm text-primary-400">أو اسحب وأفلت الصورة هنا</p>
             <p className="text-xs text-primary-300">JPG, PNG, WebP • حتى 5MB</p>
           </button>
         )}

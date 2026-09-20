@@ -41,26 +41,26 @@ export function Modal({ open, onClose, title, children, size = 'md', footer, clo
   if (!open) return null
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/50 animate-fade-in" onClick={closeOnOverlayClick ? onClose : undefined} ref={overlayRef}>
+    <div className="fixed inset-0 z-50 flex items-start sm:items-center justify-center p-3 sm:p-4 bg-black/50 animate-fade-in overflow-y-auto overscroll-contain" onClick={closeOnOverlayClick ? onClose : undefined} ref={overlayRef}>
       <div
         ref={contentRef}
-        className={cn('w-full bg-white rounded-2xl shadow-xl animate-scale-in', sizes[size])}
+        className={cn('w-full max-w-[calc(100vw-1rem)] sm:max-w-[calc(100vw-2rem)] bg-white rounded-2xl shadow-xl animate-scale-in flex flex-col max-h-[95vh] sm:max-h-[90vh] my-4 sm:my-8 overflow-hidden', sizes[size])}
         onClick={e => e.stopPropagation()}
         role="dialog"
         aria-modal="true"
         aria-labelledby={title ? 'modal-title' : undefined}
       >
         {(title || footer) && (
-          <div className="flex items-center justify-between px-6 py-4 border-b border-primary-200">
-            {title && <h2 id="modal-title" className="text-lg font-semibold text-primary-900">{title}</h2>}
-            <button onClick={onClose} className="p-1 rounded-lg text-primary-400 hover:text-primary-600 hover:bg-primary-100 transition-colors" aria-label="إغلاق">
+          <div className="flex items-center justify-between gap-2 px-4 sm:px-6 py-4 border-b border-primary-200 shrink-0">
+            {title && <h2 id="modal-title" className="text-base sm:text-lg font-semibold text-primary-900 truncate min-w-0">{title}</h2>}
+            <button onClick={onClose} className="p-1 rounded-lg text-primary-400 hover:text-primary-600 hover:bg-primary-100 transition-colors shrink-0" aria-label="إغلاق">
               <X className="h-5 w-5" />
             </button>
           </div>
         )}
-        <div className="p-6">{children}</div>
+        <div className="p-4 sm:p-6 overflow-y-auto flex-1 min-h-0 overscroll-contain">{children}</div>
         {footer && (
-          <div className="flex items-center justify-end gap-3 px-6 py-4 border-t border-primary-200 bg-primary-50 rounded-b-2xl">
+          <div className="flex items-center justify-end gap-2 sm:gap-3 px-4 sm:px-6 py-4 border-t border-primary-200 bg-primary-50 rounded-b-2xl flex-wrap shrink-0">
             {footer}
           </div>
         )}

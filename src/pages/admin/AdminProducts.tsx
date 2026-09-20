@@ -118,7 +118,7 @@ export function AdminProducts() {
   const totalPages = Math.ceil(total / PAGE_SIZE) || 1
 
   return (
-    <div>
+    <div className="w-full max-w-full min-w-0 overflow-x-hidden">
       <PageHeader
         title="إدارة المنتجات"
         description={`${total} منتج`}
@@ -129,7 +129,7 @@ export function AdminProducts() {
         }
       />
 
-      <div className="bg-white rounded-2xl border border-primary-200 p-4 mb-4">
+      <div className="bg-white rounded-2xl border border-primary-200 p-3 sm:p-4 mb-4 w-full max-w-full">
         <div className="grid gap-3 grid-cols-1 sm:grid-cols-2 lg:grid-cols-5">
           <SearchInput value={search} onChange={(v) => { setSearch(v); setPage(1) }} placeholder="بحث بالاسم أو SKU أو slug..." className="lg:col-span-2" />
           <select value={filterCategory} onChange={(e) => { setFilterCategory(e.target.value); setPage(1) }} className="select">
@@ -156,7 +156,7 @@ export function AdminProducts() {
         </div>
       </div>
 
-      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden">
+      <div className="bg-white rounded-2xl border border-primary-200 overflow-hidden w-full max-w-full">
         {loading ? (
           <div className="p-4 space-y-3">
             {Array.from({ length: 5 }).map((_, i) => (
@@ -165,8 +165,8 @@ export function AdminProducts() {
           </div>
         ) : products.length ? (
           <>
-            <div className="overflow-x-auto">
-              <table className="w-full">
+            <div className="overflow-x-auto w-full max-w-full">
+              <table className="w-full min-w-[600px]">
                 <thead className="bg-primary-50">
                   <tr className="text-right">
                     <th className="px-4 py-3 text-xs font-medium text-primary-500">الصورة</th>

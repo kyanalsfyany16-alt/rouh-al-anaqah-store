@@ -27,6 +27,8 @@ export function AdminCategories() {
   const [showAttrModal, setShowAttrModal] = useState(false)
   const [editingAttr, setEditingAttr] = useState<CategoryAttribute | null>(null)
   const [attrForm, setAttrForm] = useState({ name: '', slug: '', type: 'text', options: '', is_required: false, sort_order: 0 })
+  const [attrOptions, setAttrOptions] = useState<string[]>([])
+  const [newOption, setNewOption] = useState('')
 
   useEffect(() => {
     loadCategories()
@@ -39,6 +41,24 @@ export function AdminCategories() {
       setFiltered(categories.filter((c) => c.name.toLowerCase().includes(term) || c.slug.toLowerCase().includes(term)))
     }
   }, [search, categories])
+
+  useEffect(() => {
+    if (showModal && editingCategory) {
+      setAttrCategory(editingCategory)
+      setAttrLoading(true)
+      supabase
+        .from('category_attributes')
+        .select('*')
+        .eq('category_id', editingCategory.id)
+        .order('sort_order')
+        .then(({ data }) => {
+          setAttrs((data as CategoryAttribute[]) ?? [])
+          setAttrLoading(false)
+        })
+    } else if (!showModal && !attrCategory) {
+      setAttrs([])
+    }
+  }, [showModal, editingCategory?.id])
 
   const loadCategories = async () => {
     setLoading(true)
@@ -116,27 +136,39 @@ export function AdminCategories() {
   const openAttrModal = (attr?: CategoryAttribute) => {
     if (attr) {
       setEditingAttr(attr)
-      setAttrForm({ name: attr.name, slug: attr.slug, type: attr.type, options: Array.isArray(attr.options) ? (attr.options as string[]).join(', ') : '', is_required: attr.is_required, sort_order: attr.sort_order })
+      setAttrForm({ name: attr.name, slug: attr.slug, type: attr.type, options: '', is_required: attr.is_required, sort_order: attr.sort_order })
+      setAttrOptions(Array.isArray(attr.options) ? (attr.options as string[]) : [])
     } else {
       setEditingAttr(null)
       setAttrForm({ name: '', slug: '', type: 'text', options: '', is_required: false, sort_order: 0 })
+      setAttrOptions([])
     }
+    setNewOption('')
     setShowAttrModal(true)
+  }
+
+  const handleAddOption = () => {
+    const v = newOption.trim()
+    if (!v) return
+    if (attrOptions.includes(v)) return toastError('الخيار موجود مسبقاً')
+    setAttrOptions((prev) => [...prev, v])
+    setNewOption('')
+  }
+
+  const handleRemoveOption = (idx: number) => {
+    setAttrOptions((prev) => prev.filter((_, i) => i !== idx))
   }
 
   const handleAttrSubmit = async () => {
     if (!attrCategory) return
     if (!attrForm.name.trim() || !attrForm.slug.trim()) return toastError('الاسم والرابط مطلوبان')
-    const options = attrForm.options
-      .split(',')
-      .map((s) => s.trim())
-      .filter(Boolean)
+    if ((attrForm.type === 'select' || attrForm.type === 'multiselect') && attrOptions.length === 0) return toastError('أضف خياراً واحداً على الأقل')
     const payload = {
       category_id: attrCategory.id,
       name: attrForm.name.trim(),
       slug: attrForm.slug.trim(),
       type: attrForm.type,
-      options: options as unknown as string[],
+      options: (attrForm.type === 'select' || attrForm.type === 'multiselect' ? attrOptions : []) as unknown as string[],
       is_required: attrForm.is_required,
       sort_order: Number(attrForm.sort_order) || 0,
     }
@@ -308,6 +340,47 @@ export function AdminCategories() {
             <input type="checkbox" checked={formData.is_active} onChange={(e) => setFormData({ ...formData, is_active: e.target.checked })} className="h-4 w-4 rounded border-primary-300 text-gold" />
             <span className="text-sm">نشط</span>
           </label>
+          {editingCategory && (
+            <div className="border-t border-primary-200 pt-4 mt-2">
+              <div className="flex items-center justify-between mb-3">
+                <h4 className="font-semibold text-primary-900 text-sm">خصائص: {editingCategory.name}</h4>
+                <Button
+                  onClick={() => {
+                    setAttrCategory(editingCategory)
+                    openAttrModal()
+                  }}
+                  variant="outline"
+                  size="sm"
+                >
+                  <Plus className="h-4 w-4" /> خاصية جديدة
+                </Button>
+              </div>
+              {attrCategory?.id === editingCategory.id && attrs.length ? (
+                <div className="space-y-2">
+                  {attrs.map((a) => (
+                    <div key={a.id} className="flex items-center justify-between p-3 border border-primary-200 rounded-xl bg-primary-50/50">
+                      <div className="min-w-0 flex-1">
+                        <p className="font-medium text-primary-900 text-sm truncate">{a.name}</p>
+                        <p className="text-xs text-primary-500">
+                          {a.type === 'text' ? 'نص' : a.type === 'number' ? 'رقم' : a.type === 'select' ? 'قائمة منسدلة' : a.type === 'boolean' ? 'نعم/لا' : a.type === 'date' ? 'تاريخ' : a.type === 'image' ? 'صورة' : a.type} • ترتيب {a.sort_order} {a.is_required ? '• إلزامي' : '• اختياري'}
+                        </p>
+                      </div>
+                      <div className="flex items-center gap-1 shrink-0">
+                        <Button onClick={() => openAttrModal(a)} variant="ghost" size="sm">
+                          <Edit className="h-3 w-3" />
+                        </Button>
+                        <Button onClick={() => handleAttrDelete(a.id)} variant="ghost" size="sm" className="text-danger">
+                          <Trash2 className="h-3 w-3" />
+                        </Button>
+                      </div>
+                    </div>
+                  ))}
+                </div>
+              ) : (
+                <p className="text-xs text-primary-500 text-center py-3 border border-dashed border-primary-200 rounded-xl">لا توجد خصائص بعد — اضغط "خاصية جديدة" لإضافتها</p>
+              )}
+            </div>
+          )}
         </form>
       </Modal>
 
@@ -402,8 +475,25 @@ export function AdminCategories() {
           </div>
           {(attrForm.type === 'select' || attrForm.type === 'multiselect') && (
             <div className="min-w-0">
-              <Label>الخيارات (افصل بفاصلة)</Label>
-              <Input value={attrForm.options} onChange={(e) => setAttrForm({ ...attrForm, options: e.target.value })} placeholder="أسود, أبيض, بيج" />
+              <Label>خيارات الخاصية</Label>
+              <div className="flex gap-2">
+                <Input value={newOption} onChange={(e) => setNewOption(e.target.value)} placeholder="مثال: أحمر" onKeyDown={(e) => { if (e.key === 'Enter') { e.preventDefault(); handleAddOption() } }} />
+                <Button type="button" onClick={handleAddOption} variant="outline" className="shrink-0 whitespace-nowrap">
+                  + إضافة خيار
+                </Button>
+              </div>
+              {attrOptions.length > 0 && (
+                <div className="flex flex-wrap gap-2 mt-3">
+                  {attrOptions.map((opt, idx) => (
+                    <span key={idx} className="inline-flex items-center gap-1 px-3 py-1 bg-primary-100 border border-primary-200 rounded-full text-sm">
+                      {opt}
+                      <button type="button" onClick={() => handleRemoveOption(idx)} className="p-0.5 hover:text-danger" aria-label="حذف">
+                        <X className="h-3 w-3" />
+                      </button>
+                    </span>
+                  ))}
+                </div>
+              )}
             </div>
           )}
           <label className="flex items-center gap-2">

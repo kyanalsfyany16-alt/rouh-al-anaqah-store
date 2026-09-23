@@ -113,10 +113,10 @@ async function main() {
   const urls = [...staticRoutes]
 
   for (const p of products) {
-    if (!p.slug) continue
+    if (!p.slug || typeof p.slug !== 'string' || !p.slug.trim()) continue
 
     urls.push({
-      loc: `${SITE_URL}/product/${encodeURIComponent(p.slug)}`,
+      loc: `${SITE_URL}/product/${encodeURIComponent(p.slug.trim())}`,
       lastmod: p.updated_at
         ? new Date(p.updated_at).toISOString().split('T')[0]
         : undefined,
@@ -126,10 +126,10 @@ async function main() {
   }
 
   for (const c of categories) {
-    if (!c.slug) continue
+    if (!c.slug || typeof c.slug !== 'string' || !c.slug.trim()) continue
 
     urls.push({
-      loc: `${SITE_URL}/shop?category=${encodeURIComponent(c.slug)}`,
+      loc: `${SITE_URL}/shop?category=${encodeURIComponent(c.slug.trim())}`,
       lastmod: c.created_at
         ? new Date(c.created_at).toISOString().split('T')[0]
         : undefined,

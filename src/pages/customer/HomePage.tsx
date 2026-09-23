@@ -95,10 +95,10 @@ export function HomePage() {
   const renderSection = (title: string, products: Product[], href: string, showViewAll = true) => {
     if (!products.length) return null
     return (
-      <section className="py-4" aria-labelledby={title}>
-        <div className="flex items-center justify-between mb-6">
-          <h2 className="section-title">{title}</h2>
-          {showViewAll && <Link to={href} className="text-gold hover:underline text-sm font-medium">عرض الكل <ArrowLeft className="h-4 w-4 ml-1" /></Link>}
+      <section className="py-1 sm:py-2 w-full max-w-full min-w-0" aria-labelledby={title}>
+        <div className="flex items-center justify-between gap-2 mb-3 sm:mb-4 min-w-0">
+          <h2 className="section-title truncate min-w-0 text-lg sm:text-xl lg:text-2xl">{title}</h2>
+          {showViewAll && <Link to={href} className="text-gold hover:underline text-xs sm:text-sm font-medium shrink-0 inline-flex items-center gap-1">عرض الكل <ArrowLeft className="h-3 w-3 sm:h-4 sm:w-4" /></Link>}
         </div>
         <ProductGrid>
           {products.map(p => <ProductCard key={p.id} product={p} />)}
@@ -108,7 +108,7 @@ export function HomePage() {
   }
 
   return (
-    <div className="space-y-16 pb-16">
+    <div className="space-y-6 sm:space-y-8 lg:space-y-12 pb-6 sm:pb-8 lg:pb-12 w-full max-w-full min-w-0 overflow-x-hidden">
       <SEO
         description={settings?.about_us?.slice(0, 160)}
         canonical="/"
@@ -116,8 +116,8 @@ export function HomePage() {
         structuredData={[buildOrganizationJsonLd(settings, siteUrl), buildWebsiteJsonLd(siteUrl)]}
       />
       {heroBanner && (
-        <section className="relative rounded-2xl overflow-hidden" aria-label="بانر رئيسي">
-          <img src={heroBanner.image_url} alt={heroBanner.title || `بانر ${settings?.store_name || 'روح الأناقة'}`} className="w-full h-[420px] sm:h-[520px] object-cover" fetchPriority="high" />
+        <section className="relative rounded-2xl overflow-hidden w-full max-w-full" aria-label="بانر رئيسي">
+          <img src={heroBanner.image_url} alt={heroBanner.title || `بانر ${settings?.store_name || 'روح الأناقة'}`} className="w-full max-w-full h-[320px] sm:h-[420px] lg:h-[520px] object-cover" fetchPriority="high" />
           <div className="absolute inset-0 bg-gradient-to-l from-primary-950/80 via-primary-950/40 to-transparent" />
           <div className="absolute inset-0 container-app flex items-center">
             <div className="max-w-2xl animate-fade-in">
@@ -131,32 +131,32 @@ export function HomePage() {
         </section>
       )}
 
-      <section className="grid gap-4 grid-cols-2 sm:grid-cols-4" aria-label="المميزات">
+      <section className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-4 w-full max-w-full" aria-label="المميزات">
         {features.map((f, i) => (
-          <div key={i} className="p-6 bg-white rounded-2xl border border-primary-200 text-center hover:border-gold hover:shadow-soft transition-all">
-            <div className="mx-auto mb-3 p-3 bg-gold/10 rounded-xl w-fit text-gold">{f.icon && <f.icon className="h-6 w-6" />}</div>
-            <h3 className="font-semibold text-primary-900">{f.title}</h3>
-            <p className="text-sm text-primary-500 mt-1">{f.desc}</p>
+          <div key={i} className="p-4 sm:p-6 bg-white rounded-2xl border border-primary-200 text-center hover:border-gold hover:shadow-soft transition-all min-w-0">
+            <div className="mx-auto mb-2 sm:mb-3 p-2 sm:p-3 bg-gold/10 rounded-xl w-fit text-gold">{f.icon && <f.icon className="h-5 w-5 sm:h-6 sm:w-6" />}</div>
+            <h3 className="font-semibold text-primary-900 text-sm sm:text-base truncate">{f.title}</h3>
+            <p className="text-xs sm:text-sm text-primary-500 mt-1 line-clamp-2">{f.desc}</p>
           </div>
         ))}
       </section>
 
       {categories.length > 0 && (
-        <section aria-labelledby="الفئات">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="section-title">الفئات</h2>
-            <Link to="/shop" className="text-gold hover:underline text-sm font-medium">
-              عرض الكل <ArrowLeft className="h-4 w-4 ml-1 inline" />
+        <section aria-labelledby="الفئات" className="w-full max-w-full min-w-0">
+          <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6 min-w-0">
+            <h2 className="section-title truncate min-w-0">الفئات</h2>
+            <Link to="/shop" className="text-gold hover:underline text-sm font-medium shrink-0 inline-flex items-center gap-1">
+              عرض الكل <ArrowLeft className="h-4 w-4" />
             </Link>
           </div>
-          <div className="grid gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4">
+          <div className="grid gap-3 sm:gap-4 grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 w-full max-w-full">
             {categories.map((c) => (
-              <Link key={c.id} to={`/shop?category=${c.slug}`} className="group relative rounded-2xl overflow-hidden bg-white border border-primary-200 hover:border-gold hover:shadow-soft transition-all">
+              <Link key={c.id} to={`/shop?category=${c.slug}`} className="group relative rounded-2xl overflow-hidden bg-white border border-primary-200 hover:border-gold hover:shadow-soft transition-all min-w-0">
                 <div className="aspect-[4/3] overflow-hidden bg-primary-50">
-                  {c.image_url ? <img src={c.image_url} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-primary-300"><Tag className="h-10 w-10" /></div>}
+                  {c.image_url ? <img src={c.image_url} alt={c.name} className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300" loading="lazy" /> : <div className="w-full h-full flex items-center justify-center text-primary-300"><Tag className="h-8 w-8 sm:h-10 sm:w-10" /></div>}
                 </div>
-                <div className="p-3 text-center">
-                  <h3 className="font-semibold text-primary-900 group-hover:text-gold transition-colors">{c.name}</h3>
+                <div className="p-2 sm:p-3 text-center min-w-0">
+                  <h3 className="font-semibold text-primary-900 group-hover:text-gold transition-colors text-sm sm:text-base truncate">{c.name}</h3>
                 </div>
               </Link>
             ))}
@@ -167,8 +167,8 @@ export function HomePage() {
       {renderSection('منتجات مميزة', featuredProducts, '/shop?featured=true')}
 
       {discountBanner && (
-        <section className="relative rounded-2xl overflow-hidden" aria-label="بانر العروض">
-          <img src={discountBanner.image_url} alt={discountBanner.title || ''} className="w-full h-64 object-cover" />
+        <section className="relative rounded-2xl overflow-hidden w-full max-w-full" aria-label="بانر العروض">
+          <img src={discountBanner.image_url} alt={discountBanner.title || ''} className="w-full max-w-full h-48 sm:h-64 object-cover" />
           <div className="absolute inset-0 bg-gradient-to-r from-primary-950/70 to-primary-950/30" />
           <div className="absolute inset-0 container-app flex items-center">
             <div className="max-w-md animate-slide-in">
@@ -185,19 +185,19 @@ export function HomePage() {
       {renderSection('منتجات بخصم', discountedProducts, '/shop?sort=discount')}
 
       {brands.length > 0 && (
-        <section aria-label="العلامات التجارية">
-          <div className="flex items-center justify-between mb-6">
-            <h2 className="section-title">العلامات التجارية</h2>
+        <section aria-label="العلامات التجارية" className="w-full max-w-full min-w-0">
+          <div className="flex items-center justify-between gap-2 mb-4 sm:mb-6 min-w-0">
+            <h2 className="section-title truncate min-w-0">العلامات التجارية</h2>
           </div>
-          <div className="grid gap-4 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6">
+          <div className="grid gap-3 sm:gap-4 grid-cols-3 sm:grid-cols-4 md:grid-cols-5 lg:grid-cols-6 w-full max-w-full">
             {brands.map(b => (
-              <Link key={b.id} to={`/shop?brand=${b.slug}`} className="p-4 bg-white rounded-2xl border border-primary-200 hover:border-gold hover:shadow-soft transition-all text-center">
+              <Link key={b.id} to={`/shop?brand=${b.slug}`} className="p-3 sm:p-4 bg-white rounded-2xl border border-primary-200 hover:border-gold hover:shadow-soft transition-all text-center min-w-0">
                 {b.logo_url ? (
-                  <img src={b.logo_url} alt={b.name} className="mx-auto h-12 object-contain" />
+                  <img src={b.logo_url} alt={b.name} className="mx-auto h-10 sm:h-12 object-contain max-w-full" loading="lazy" />
                 ) : (
-                  <div className="h-12 flex items-center justify-center text-primary-300">🏷️</div>
+                  <div className="h-10 sm:h-12 flex items-center justify-center text-primary-300">🏷️</div>
                 )}
-                <p className="mt-2 text-sm font-medium text-primary-700 truncate">{b.name}</p>
+                <p className="mt-2 text-xs sm:text-sm font-medium text-primary-700 truncate">{b.name}</p>
               </Link>
             ))}
           </div>

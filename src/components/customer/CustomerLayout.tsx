@@ -54,8 +54,10 @@ export function CustomerLayout() {
         authLoading={authLoading}
       />
 
-      <main className="flex-1">
-        <Outlet />
+      <main className="flex-1 w-full max-w-full min-w-0 overflow-x-hidden">
+        <div className="container-app w-full max-w-7xl min-w-0">
+          <Outlet />
+        </div>
       </main>
 
       <Footer social={social} settings={settings} currencies={currencies} />
@@ -120,15 +122,23 @@ function Navbar({
     setNotifications((prev) => prev.map((n) => (n.id === id ? { ...n, is_read: true } : n)))
     setUnreadCount((c) => Math.max(0, c - 1))
   }
-  return (
+    return (
     <header className="sticky top-0 z-40 bg-white/95 backdrop-blur-sm border-b border-primary-200">
       <div className="container-app">
-        <div className="flex items-center justify-between h-16 lg:h-20 gap-4">
-          <Link to="/" className="flex items-center gap-3" aria-label={storeName}>
-            <div className="w-10 h-10 rounded-xl bg-primary-900 flex items-center justify-center">
+        <div className="flex items-center justify-between h-16 lg:h-20 gap-3 sm:gap-4">
+          <button
+            onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+            className="lg:hidden p-2 rounded-xl text-primary-500 hover:bg-primary-100 transition-colors shrink-0"
+            aria-label="القائمة"
+            aria-expanded={mobileMenuOpen}
+          >
+            {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
+          </button>
+          <Link to="/" className="flex items-center gap-2 sm:gap-3 shrink-0" aria-label={storeName}>
+            <div className="w-10 h-10 rounded-xl bg-primary-900 flex items-center justify-center shrink-0">
               <span className="text-2xl font-display font-bold text-gold">ر</span>
             </div>
-            <span className="hidden sm:block font-display font-bold text-xl text-primary-900">{storeName}</span>
+            <span className="hidden sm:block font-display font-bold text-xl text-primary-900 truncate">{storeName}</span>
           </Link>
 
           <nav className="hidden lg:flex items-center gap-5" aria-label="القائمة الرئيسية">
@@ -250,15 +260,6 @@ function Navbar({
                 <Link to="/register" className="btn-gold px-4 py-2">تسجيل</Link>
               </div>
             )}
-
-            <button
-              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="lg:hidden p-2 rounded-xl text-primary-500 hover:bg-primary-100 transition-colors"
-              aria-label="القائمة"
-              aria-expanded={mobileMenuOpen}
-            >
-              {mobileMenuOpen ? <X className="h-6 w-6" /> : <Menu className="h-6 w-6" />}
-            </button>
           </div>
         </div>
 
@@ -307,19 +308,19 @@ function Footer({ social, settings, currencies }: { social: any[]; settings: any
   const defaultCurrency = currencies.find(c => c.is_default) || currencies[0]
   return (
     <footer className="bg-primary-950 text-primary-100 mt-auto">
-      <div className="container-app py-12 lg:py-16">
-        <div className="grid gap-8 md:grid-cols-2 lg:grid-cols-4">
+      <div className="container-app py-6 lg:py-16">
+        <div className="grid gap-6 lg:gap-8 grid-cols-1 md:grid-cols-2 lg:grid-cols-4">
           <div className="lg:col-span-2">
-            <Link to="/" className="flex items-center gap-3 mb-4">
-              <div className="w-12 h-12 rounded-xl bg-primary-900 flex items-center justify-center">
-                <span className="text-3xl font-display font-bold text-gold">ر</span>
+            <Link to="/" className="flex items-center gap-2 sm:gap-3 mb-2 sm:mb-4">
+              <div className="w-9 h-9 sm:w-10 lg:w-12 sm:h-10 lg:h-12 rounded-xl bg-primary-900 flex items-center justify-center shrink-0">
+                <span className="text-xl sm:text-2xl lg:text-3xl font-display font-bold text-gold">ر</span>
               </div>
-              <span className="font-display font-bold text-2xl text-white">{settings?.store_name || 'روح الأناقة'}</span>
+              <span className="font-display font-bold text-lg sm:text-xl lg:text-2xl text-white truncate">{settings?.store_name || 'روح الأناقة'}</span>
             </Link>
-            <p className="text-primary-400 mb-6 max-w-xs">{settings?.about_us || 'متجر إلكتروني رجالي فاخر يقدم أفضل المنتجات بأعلى جودة'}</p>
-            <div className="flex gap-4">
+            <p className="text-primary-400 text-sm lg:text-base mb-3 lg:mb-6 max-w-xs leading-relaxed">{settings?.about_us || 'متجر إلكتروني رجالي فاخر يقدم أفضل المنتجات بأعلى جودة'}</p>
+            <div className="flex gap-2 sm:gap-4">
               {social.slice(0, 4).map(s => (
-                <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" className="p-2 bg-primary-800 rounded-xl text-primary-300 hover:text-gold hover:bg-primary-700 transition-colors" aria-label={s.platform}>
+                <a key={s.id} href={s.url} target="_blank" rel="noopener noreferrer" className="p-1.5 sm:p-2 bg-primary-800 rounded-xl text-primary-300 hover:text-gold hover:bg-primary-700 transition-colors" aria-label={s.platform}>
                   {s.icon || '🔗'}
                 </a>
               ))}
@@ -327,31 +328,31 @@ function Footer({ social, settings, currencies }: { social: any[]; settings: any
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-4">روابط سريعة</h4>
-            <ul className="space-y-2 text-primary-400">
-              <li><Link to="/shop" className="hover:text-gold transition-colors">المتجر</Link></li>
-              <li><Link to="/contact" className="hover:text-gold transition-colors">تواصل معنا</Link></li>
-              <li><Link to="/page/shipping" className="hover:text-gold transition-colors">سياسة الشحن</Link></li>
-              <li><Link to="/page/returns" className="hover:text-gold transition-colors">سياسة الإرجاع</Link></li>
-              <li><Link to="/page/privacy" className="hover:text-gold transition-colors">الخصوصية</Link></li>
-              <li><Link to="/page/terms" className="hover:text-gold transition-colors">الشروط والأحكام</Link></li>
+            <h4 className="font-semibold text-white text-sm lg:text-base mb-2 lg:mb-4">روابط سريعة</h4>
+            <ul className="space-y-1 lg:space-y-2 text-primary-400 text-sm">
+              <li><Link to="/shop" className="hover:text-gold transition-colors text-xs sm:text-sm">المتجر</Link></li>
+              <li><Link to="/contact" className="hover:text-gold transition-colors text-xs sm:text-sm">تواصل معنا</Link></li>
+              <li><Link to="/page/shipping" className="hover:text-gold transition-colors text-xs sm:text-sm">سياسة الشحن</Link></li>
+              <li><Link to="/page/returns" className="hover:text-gold transition-colors text-xs sm:text-sm">سياسة الإرجاع</Link></li>
+              <li><Link to="/page/privacy" className="hover:text-gold transition-colors text-xs sm:text-sm">الخصوصية</Link></li>
+              <li><Link to="/page/terms" className="hover:text-gold transition-colors text-xs sm:text-sm">الشروط والأحكام</Link></li>
             </ul>
           </div>
 
           <div>
-            <h4 className="font-semibold text-white mb-4">معلومات التواصل</h4>
-            <ul className="space-y-2 text-primary-400">
-              {settings?.phone && <li className="flex items-center gap-2">📞 {settings.phone}</li>}
-              {settings?.email && <li className="flex items-center gap-2">✉️ {settings.email}</li>}
-              {settings?.address && <li className="flex items-center gap-2">📍 {settings.address}</li>}
+            <h4 className="font-semibold text-white text-sm lg:text-base mb-2 lg:mb-4">معلومات التواصل</h4>
+            <ul className="space-y-1 lg:space-y-2 text-primary-400 text-sm">
+              {settings?.phone && <li className="flex items-center gap-2 text-xs sm:text-sm">📞 {settings.phone}</li>}
+              {settings?.email && <li className="flex items-center gap-2 text-xs sm:text-sm">✉️ {settings.email}</li>}
+              {settings?.address && <li className="flex items-center gap-2 text-xs sm:text-sm">📍 {settings.address}</li>}
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-primary-800 mt-10 pt-8 flex flex-col md:flex-row items-center justify-between gap-4">
-          <p className="text-primary-500 text-sm">&copy; {new Date().getFullYear()} {settings?.store_name || 'روح الأناقة'}. جميع الحقوق محفوظة.</p>
+        <div className="border-t border-primary-800 mt-6 lg:mt-10 pt-4 lg:pt-8 flex flex-col md:flex-row items-center justify-between gap-3 lg:gap-4">
+          <p className="text-primary-500 text-xs lg:text-sm">&copy; {new Date().getFullYear()} {settings?.store_name || 'روح الأناقة'}. جميع الحقوق محفوظة.</p>
           <div className="flex items-center gap-2">
-            <select className="bg-primary-800 border border-primary-700 rounded-xl px-3 py-2 text-sm text-white focus:outline-none focus:ring-2 focus:ring-gold">
+            <select className="bg-primary-800 border border-primary-700 rounded-lg lg:rounded-xl px-2.5 lg:px-3 py-1.5 lg:py-2 text-xs lg:text-sm text-white focus:outline-none focus:ring-2 focus:ring-gold">
               {currencies.map(c => <option key={c.id} value={c.code}>{c.code} {c.symbol}</option>)}
             </select>
           </div>

@@ -11,4 +11,4 @@ Disallow: /login
 Disallow: /register
 Disallow: /forgot-password
 
-Sitemap: https://example.com/sitemap.xml
+Sitemap: https://rouh-al-anaqah-store.vercel.app/sitemap.xml

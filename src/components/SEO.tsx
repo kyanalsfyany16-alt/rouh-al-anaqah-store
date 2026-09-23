@@ -11,7 +11,7 @@ interface SEOProps {
   noindex?: boolean
 }
 
-const SITE_URL = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(/\/$/, '') || ''
+const SITE_URL = (import.meta.env.VITE_SITE_URL as string | undefined)?.replace(/\/$/, '') || 'https://rouh-al-anaqah-store.vercel.app'
 const SITE_NAME = 'روح الأناقة'
 const DEFAULT_TITLE = 'روح الأناقة | متجر إلكتروني رجالي فاخر'
 const DEFAULT_DESC = 'روح الأناقة - متجر إلكتروني رجالي فاخر للملابس والساعات والعطور والشنط والإكسسوارات بأعلى جودة'

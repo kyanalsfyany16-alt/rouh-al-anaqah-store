@@ -7,7 +7,7 @@ import { existsSync } from 'node:fs'
 
 const SITE_URL =
   (process.env.VITE_SITE_URL || process.env.SITE_URL || '').replace(/\/$/, '') ||
-  'https://example.com'
+  'https://rouh-al-anaqah-store.vercel.app'
 
 const SUPABASE_URL =
   process.env.VITE_SUPABASE_URL || process.env.SUPABASE_URL || ''

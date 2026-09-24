@@ -62,6 +62,17 @@ function xmlEscape(s) {
     .replace(/"/g, '&quot;')
 }
 
+function isValidSlug(slug) {
+  if (!slug || typeof slug !== 'string') return false
+  const s = slug.trim()
+  if (!s) return false
+  if (s === '.' || s === '..') return false
+  if (s.length < 2) return false
+  if (/^[.\-_]+$/.test(s)) return false
+  if (s.includes(' ') || s.includes('?') || s.includes('&') || s.includes('=')) return false
+  return true
+}
+
 async function main() {
   const staticRoutes = [
     {
@@ -106,6 +117,8 @@ async function main() {
     console.log(
       `Fetched ${products.length} products, ${categories.length} categories`
     )
+    if (categories.length) console.log('Category slugs:', categories.map((c) => JSON.stringify(c.slug)).join(', '))
+    if (products.length) console.log('Product slugs:', products.map((p) => JSON.stringify(p.slug)).join(', '))
   } else {
     console.log('No Supabase env, generating static sitemap only')
   }
@@ -113,7 +126,10 @@ async function main() {
   const urls = [...staticRoutes]
 
   for (const p of products) {
-    if (!p.slug || typeof p.slug !== 'string' || !p.slug.trim()) continue
+    if (!isValidSlug(p.slug)) {
+      console.warn(`Skipping invalid product slug: ${JSON.stringify(p.slug)}`)
+      continue
+    }
 
     urls.push({
       loc: `${SITE_URL}/product/${encodeURIComponent(p.slug.trim())}`,
@@ -126,7 +142,10 @@ async function main() {
   }
 
   for (const c of categories) {
-    if (!c.slug || typeof c.slug !== 'string' || !c.slug.trim()) continue
+    if (!isValidSlug(c.slug)) {
+      console.warn(`Skipping invalid category slug: ${JSON.stringify(c.slug)}`)
+      continue
+    }
 
     urls.push({
       loc: `${SITE_URL}/shop?category=${encodeURIComponent(c.slug.trim())}`,

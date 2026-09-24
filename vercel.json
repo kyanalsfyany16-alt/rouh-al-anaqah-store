@@ -1,0 +1,9 @@
+{
+  "rewrites": [
+    { "source": "/sitemap.xml", "destination": "/sitemap.xml" },
+    { "source": "/robots.txt", "destination": "/robots.txt" },
+    { "source": "/favicon.svg", "destination": "/favicon.svg" },
+    { "source": "/google73130213bed1bfd3.html", "destination": "/google73130213bed1bfd3.html" },
+    { "source": "/(.*)", "destination": "/index.html" }
+  ]
+}
